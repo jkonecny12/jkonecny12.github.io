@@ -1,101 +1,116 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <title>Dragon's Lair</title>
-        <link rel="stylesheet" href="http://blog.packetseekers.eu/theme/css/main.css" />
-        <link href="http://blog.packetseekers.eu/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Dragon's Lair Atom Feed" />
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="http://blog.packetseekers.eu/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://blog.packetseekers.eu/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="http://blog.packetseekers.eu/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="http://blog.packetseekers.eu/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Dragon's Lair Atom">
+
+
+
+
+
+    <meta name="author" content="Jiri Konecny" />
+    <meta name="description" content="" />
+<meta property="og:site_name" content="Dragon's Lair"/>
+<meta property="og:type" content="blog"/>
+<meta property="og:title" content="Dragon's Lair"/>
+<meta property="og:description" content=""/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://blog.packetseekers.eu"/>
+
+  <title>Dragon's Lair</title>
+
 </head>
+<body>
+  <aside>
+    <div>
+      <a href="http://blog.packetseekers.eu">
+        <img src="http://blog.packetseekers.eu/theme/img/profile.png" alt="" title="">
+      </a>
+      <h1><a href="http://blog.packetseekers.eu"></a></h1>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="http://blog.packetseekers.eu/">Dragon's Lair </a></h1>
-                <nav><ul>
-                    <li><a href="http://blog.packetseekers.eu/pages/about-date-2019-08-30.html">About date: 2019-08-30</a></li>
-                    <li><a href="http://blog.packetseekers.eu/category/anaconda.html">Anaconda</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://blog.packetseekers.eu/space-requirement-check-in-anaconda-reworked-for-fedora-23.html">Space requirement check in Anaconda reworked for Fedora 23</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2017-10-09T00:00:00+02:00">
-                Published: Po 09 října 2017
-        </abbr>
+      <nav>
+        <ul class="list">
+          <li><a href="http://blog.packetseekers.eu/pages/about-date-2019-08-30.html#about-date-2019-08-30">About date: 2019-08-30</a></li>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://blog.packetseekers.eu/author/jiri-konecny.html">Jiri Konecny</a>
-        </address>
-<p>In <a href="http://blog.packetseekers.eu/category/anaconda.html">Anaconda</a>.</p>
+          <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+          <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+          <li><a href="#" target="_blank">You can modify those links in your config file</a></li>
+        </ul>
+      </nav>
 
-</footer><!-- /.post-info --><p>Before the release of <a href="https://fedoramagazine.org/fedora-23-released/">Fedora 23</a> I was working on a bug which have caused Anaconda to fail the installation because of RPM transaction check error.
-This brought me to the investigation of the required space check. It eventually lead to complete rework of the space requirement check in Anaconda. I would like to explain why this was needed and how is it working now.</p>
-<h4>The problem of the old space check</h4>
-<p>The old solution was really minimalistic. It read installed size of all required packages from <a href="http://dnf.baseurl.org/">DNF</a> Python interface and then added 35 percent as a 'bonus'.
-Why 35 percent? It is hard to tell. The number seems to be the result of some old empiric testing - too old to know for sure.
-And why to use 'bonus' at all? Because the value obtained from DNF is only a portion of space which is really needed for the installation. DNF computes installed package size as a sum of all file sizes in a package.
-It looks somewhat reasonable but it is still far from the real space requirement. Here are several reasons why this isn't correct:</p>
-<h4>Filesystem metadata</h4>
-<p>Every filesystem has its own metadata. It takes some space which can't be used for your data - in our case packages. I was surprised how much volume metadata can take. I won't dive into the testing suite here<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> but basically I was creating formatting on testing partition of given space and got usable space by 'df -h'. Of course this won't be 100 percent accurate because the metadata changing depends on a size of the partition
-and also on files which are there. However, it is a good way to get a basic idea about how much usable space we get after the formatting is done.
-I have run the tests on <strong>EXT2</strong>,<strong>3</strong>,<strong>4</strong>, <strong>XFS</strong>, <strong>BTRFS</strong>, <strong>JFS</strong>, <strong>ReiserFS</strong> and <strong>VFAT</strong> formats which are presumably the most often used formats on Linux nowadays.
-Therefor starting with Fedora 23 when user creates new storage device in Anaconda, the space check is testing the size of a new device reduced by highest value from the tests above.
-For example when user creates 10GB device and the format takes 10% for metadata the space check will work with 9GB size.</p>
-<h4>Required space computation</h4>
-<p>As wrote above, the old computation was done by taking sum of the installed size of all packages from DNF and adding another 35 percent to this value. I wanted to use the same computation as the <a href="http://www.rpm.org/">RPM</a> transaction check. Unfortunately the RPM check cannot be used without downloading the package and the installation environment does not have this privilege. Therefore, Anaconda had to take different approach. The RPM transaction check takes file size but aligns this file to the size of the fragment. The RPM database gets bigger for every file because of the header file. The new space requirement computation is trying to use fragment size and adding some space for every file to grow with RPM database. Additionally Anaconda's fragment size is not set to the exact value.
-The usual default value of fragment size is 4KB so the same value was used by Anaconda. As per the RPM database grow the 2KB was chosen by testing.
-As a possible future improvement the fragment size could be taken from <a href="https://github.com/rhinstaller/blivet">Blivet</a> and use this to improve the fragment alignment.</p>
-<h4>How it is working in Anaconda now</h4>
-<p>The Anaconda now takes from DNF install size which was used before but instead of 35 percent it takes also number of all files from all packages and for every file it adds 6KB to this value. It than adds 10% as bonus to have some reserve. The whole computation is as follows:</p>
-<p><code>DS * (1 - FM) &gt;= IS + (NF * 6KB) * 10%</code></p>
-<ul>
-<li><code>DS</code> - Device size</li>
-<li><code>FM</code> - Format metadata percentage</li>
-<li><code>IS</code> - Packages installed size</li>
-<li><code>NF</code> - Number of installed files</li>
-</ul>
-<p>Therefore, new version of this computation should be more precise as explained before. This solution should prevent problems in any future installations caused by lack of space. Drawback of this new method is that it needs more space then it is necessary for installation. As mentioned before, without downloading the packages it's hard to create something more precise<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>.</p>
-<div class="footnote">
-<hr>
-<ol>
-<li id="fn-1">
-<p>I'm thinking of blog post dedicated to test results of filesystem format medatadata.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn-2">
-<p>I want to add <em>--nospacecheck</em> parameter to add possibility to start the installation even when there isn't enough space.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>                </article>
-            </aside><!-- /#featured -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="http://blog.packetseekers.eu/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+      <ul class="social">
+        <li><a class="sc-You can add links in your config file" href="#" target="_blank"><i class="fa fa-You can add links in your config file"></i></a></li>
+        <li><a class="sc-Another social link" href="#" target="_blank"><i class="fa fa-Another social link"></i></a></li>
+      </ul>
+    </div>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+  </aside>
+  <main>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+
+
+
+<article>
+  <header>
+    <h2><a href="http://blog.packetseekers.eu/space-requirement-check-in-anaconda-reworked-for-fedora-23.html#space-requirement-check-in-anaconda-reworked-for-fedora-23">Space requirement check in Anaconda reworked for Fedora 23</a></h2>
+    <p>
+          Posted on Po 09 října 2017 in <a href="http://blog.packetseekers.eu/category/anaconda.html">Anaconda</a>
+
+
+
+    </p>
+  </header>
+  <div>
+      <p>Before the release of <a href="https://fedoramagazine.org/fedora-23-released/">Fedora 23</a> I was working on a bug which have caused Anaconda to fail the installation because of RPM transaction check error.
+This brought me to the investigation of the required space check. It eventually lead to complete rework of the space requirement check in Anaconda …</p>
+      <br>
+      <a class="btn" href="http://blog.packetseekers.eu/space-requirement-check-in-anaconda-reworked-for-fedora-23.html#space-requirement-check-in-anaconda-reworked-for-fedora-23">    Continue reading
+</a>
+  </div>
+</article>
+
+  <div class="pagination">
+  </div>
+
+
+
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Dragon's Lair ",
+  "url" : "http://blog.packetseekers.eu",
+  "image": "",
+  "description": ""
+}
+</script>
 
 </body>
 </html>
