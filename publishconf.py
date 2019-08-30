@@ -18,8 +18,6 @@ CATEGORY_FEED_ATOM = 'feeds/{slug}.atom.xml'
 
 DELETE_OUTPUT_DIRECTORY = True
 
-THEME = './themes/Flex'
-
 # Following items are often useful when publishing
 
 #DISQUS_SITENAME = ""
