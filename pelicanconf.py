@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 AUTHOR = 'Jiri Konecny'
 SITENAME = "Dragon's Lair"
 SITESUBTITLE = "With an age it comes the wisdom. Wise is the one who listens."
-SITEURL = 'http://blog.packetseekers.eu'
+SITEURL = ''
 
 PATH = 'content'
 
