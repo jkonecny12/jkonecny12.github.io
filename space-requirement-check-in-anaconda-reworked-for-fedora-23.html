@@ -12,13 +12,29 @@
                 <h1><a href="http://blog.packetseekers.eu/">Dragon's Lair </a></h1>
                 <nav><ul>
                     <li><a href="http://blog.packetseekers.eu/pages/about-date-2019-08-30.html">About date: 2019-08-30</a></li>
-                    <li class="active"><a href="http://blog.packetseekers.eu/pages/space-requirement-check-in-anaconda-reworked-for-fedora-23.html">Space requirement check in Anaconda reworked for Fedora 23</a></li>
+                    <li class="active"><a href="http://blog.packetseekers.eu/category/anaconda.html">Anaconda</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
-    <h1 class="entry-title">Space requirement check in Anaconda reworked for Fedora 23</h1>
-    
-    <p>Before the release of <a href="https://fedoramagazine.org/fedora-23-released/">Fedora 23</a> I was working on a bug which have caused Anaconda to fail the installation because of RPM transaction check error.
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://blog.packetseekers.eu/space-requirement-check-in-anaconda-reworked-for-fedora-23.html" rel="bookmark"
+           title="Permalink to Space requirement check in Anaconda reworked for Fedora 23">Space requirement check in Anaconda reworked for Fedora 23</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-10-09T00:00:00+02:00">
+                Published: Po 09 října 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://blog.packetseekers.eu/author/jiri-konecny.html">Jiri Konecny</a>
+        </address>
+<p>In <a href="http://blog.packetseekers.eu/category/anaconda.html">Anaconda</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Before the release of <a href="https://fedoramagazine.org/fedora-23-released/">Fedora 23</a> I was working on a bug which have caused Anaconda to fail the installation because of RPM transaction check error.
 This brought me to the investigation of the required space check. It eventually lead to complete rework of the space requirement check in Anaconda. I would like to explain why this was needed and how is it working now.</p>
 <h4>The problem of the old space check</h4>
 <p>The old solution was really minimalistic. It read installed size of all required packages from <a href="http://dnf.baseurl.org/">DNF</a> Python interface and then added 35 percent as a 'bonus'.
@@ -56,6 +72,9 @@ As a possible future improvement the fragment size could be taken from <a href="
 </li>
 </ol>
 </div>
+    </div><!-- /.entry-content -->
+
+  </article>
 </section>
         <section id="extras" class="body">
                 <div class="blogroll">
