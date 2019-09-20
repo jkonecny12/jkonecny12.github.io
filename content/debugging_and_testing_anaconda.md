@@ -21,7 +21,7 @@ To apply updates image you need to add [inst.updates](https://anaconda-installer
 
 You can easily create an updates image from the command line:
 
-```
+```shell
 find . | cpio -c -o | pigz -9cv > ../updates.img
 ```
 
@@ -36,13 +36,13 @@ You can combine any of the parameters described below.
 
 ### Basic usage
 
-```
+```shell
 ./scripts/makeupdates --tag HEAD
 ```
 
 Add all files which were not committed yet to the updates image.
 
-```
+```shell
 ./scripts/makeupdates --tag anaconda-29.1.1-1
 ```
 Add all files changed since the commit with the anaconda-29.1.1-1 git tag was created. In other words add all changes to make anaconda version 29.1.1-1 on stage 2 the current anaconda in the git repository.
@@ -53,7 +53,7 @@ Readers familiar with the git probably already know that `--tag` parameter accep
 
 From time to time there is a need to get more than just parts of the Anaconda to the updates image but instead some custom files or libraries. Even for this use case the `makeupdates` script can be used.
 
-```
+```shell
 ./scripts/makeupdates --add /path/to/my/first.rpm --add /path/to/my/second.rpm
 ```
 
@@ -67,13 +67,13 @@ RPM scriptlets are scripts in the rpm file which are executed when some action o
 
 The `makeupdates` script have a possibility to add or replace almost any content in the installation environment.
 
-```
+```shell
 ./scripts/makeupdates --keep
 ```
 
 The `--keep` parameter will prevent the script to remove the updates folder after each call of the `makeupdates`. After running this command you will see the `updates` directory in the root Anaconda directory. You can then place any file in the `updates` directory and call the above command again to create the new updates image with the desired content. Here works the same rule as in manual creation section above, that directory structure created in the `updates` directory will be preserved into the installation environment. This command can be called as many times as needed the `updates` directory won't be erased until the `--keep` parameter is used. Example of this use case is:
 
-```
+```shell
 $ ./scripts/makeupdates --keep
 
 $ mkdir -p ./updates/etc/ssh
