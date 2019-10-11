@@ -89,13 +89,13 @@ The above is an example how to change ssh configuration of the booted installati
 
 Aside from *official* `makeupdates` script in the Anaconda git repository, there is an option to use [anaconda-updates](https://github.com/rhinstaller/devel-tools/tree/master/anaconda_updates) wrapper script. This script was created mainly to simplify work with different Anaconda versions but can do more than that. This wrapper was designed to avoid writing custom user scripts. In general almost every user who has used the `makeupdates` script has also written their own scripts to, for example, upload resulting updates image for use in VM.
 
-The following steps are required to prepare an environment for using `anaconda-updates**.
+The following steps are required to prepare an environment for using `anaconda-updates`.
 
-- **Create a configuration file**
+##### Create a configuration file
 
 The configuration file is part of the anaconda updates git repository, see [link](https://github.com/rhinstaller/devel-tools/blob/master/anaconda_updates/updates.cfg). Copy this configuration file into `~/.config/anaconda-updates/updates.cfg` and fill in the values there. This configuration file will specify where is the project folder, containing projects like Anaconda, Pykickstart, and Blivet. Only Anaconda is required, however. It also defines where is the show version script (see below) and how to access a server where the updates image should be uploaded. The last part is really helpful to ease application of the updates image to the test machine, the drawback is that you have to have available server with ssh access.
 
-- **Adapt the show version script**
+##### Adapt the show version script
 
 In the git repository there is also a [script](https://github.com/rhinstaller/devel-tools/blob/master/anaconda_updates/scripts/show_version.sh) which is responsible for retrieving information about the current anaconda rpm file. This script has to be updated (or written from scratch if desired) to be applicable to your environment. See the script and make required changes.
 
